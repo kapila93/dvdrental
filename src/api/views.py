@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 
@@ -13,10 +13,11 @@ def index(request):
 def films(request):
 	if request.method == 'GET':
 		films = serializers.serialize('json', film.objects.all())
-		return JsonResponse(films, safe=False)
+		return HttpResponse(films)
 	elif request.method == 'POST':
 		print request.body
 
+@csrf_exempt
 def languages(request):
 	if request.method == 'GET':
 		languages = serializers.serialize('json', language.objects.all())
@@ -24,6 +25,7 @@ def languages(request):
 	elif request.method == 'POST':
 		print request.body
 
+@csrf_exempt
 def languages_language(request, id):
 	if request.method == 'GET':
 		language_single = serializers.serialize('json', language.objects.filter(pk=id))
